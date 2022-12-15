@@ -1,6 +1,8 @@
 import os
 from csv import writer
 
+import torch
+
 
 def append_csv_description(image_dir, label_dir, csv_file):
     with open(csv_file, 'a', newline='\n') as f_object:
@@ -36,3 +38,19 @@ def create_segmentation_description_file(description_file, image_dir,
     f.close()
     append_csv_description(image_dir, label_dir, description_file)
     print("\nfile {} generated".format(description_file))
+
+
+def dice_bce_loss(x: torch.Tensor, y: torch.Tensor):
+    """
+    Calculate loss based on average of Dice loss
+    and binary cross-entropy loss.
+    """
+    x = x.flatten()
+    y = y.flatten()
+
+    intersection = (x * y).sum()
+    dice_loss = 1 - (2. * intersection) / (x.sum() + y.sum())
+    BCE = F.binary_cross_entropy(x, y)
+    loss = (BCE + dice_loss) / 2
+
+    return loss

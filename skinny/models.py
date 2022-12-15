@@ -1,5 +1,6 @@
 from .segments import InitConv, ConvDown, DeconvUp, FinalConv, AdditionalLayers, InceptionModule, ConvInception, FirstUpscaling, Upscaling, Final
 
+import torch
 import torch.nn as nn
 
 
@@ -8,7 +9,7 @@ class SkinnyInception(nn.Module):
     Skinny architecture variant with inception modules.
     """
 
-    def __init__(self, n_channels, n_classes):
+    def __init__(self, n_channels: int, n_classes: int):
         super(SkinnyInception, self).__init__()
 
         self.n_channels = n_channels
@@ -28,7 +29,7 @@ class SkinnyInception(nn.Module):
 
         self.final = (Final(40, self.n_classes))
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         # x2-x6 receive max-pooled inputs
         x1 = self.down1(x)
         x2 = self.down2(F.max_pool2d(x1, 2))
@@ -52,7 +53,7 @@ class SkinnyBasic(nn.Module):
     Skinny architecture variant without inception modules.
     """
 
-    def __init__(self, n_channels, n_classes):
+    def __init__(self, n_channels: int, n_classes: int):
         super(SkinnyBasic, self).__init__()
 
         self.n_channels = n_channels
@@ -75,7 +76,7 @@ class SkinnyBasic(nn.Module):
 
         self.final = (FinalConv(30, n_classes))
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         x1 = self.init(x)
         x2 = self.conv_down1(x1)
         x3 = self.conv_down2(x2)

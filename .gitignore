@@ -6,3 +6,11 @@ vscode.
 
 # Python cache
 __pycache__/
+
+# Python virtual environment
+bin/
+lib/
+lib64
+include/
+pyvenv.cfg
+share/

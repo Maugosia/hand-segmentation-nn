@@ -11,7 +11,7 @@ class InceptionModule(nn.Module):
     Replaces one of the standard 3x3 convolution layers in the double convolution block.
     """
 
-    def __init__(self, in_channels, out_channels):
+    def __init__(self, in_channels: int, out_channels: int):
         super().__init__()
 
         mid_channels = out_channels // 4
@@ -45,7 +45,7 @@ class InceptionModule(nn.Module):
             nn.ReLU(inplace=True)
         )
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         x1 = self.first_path(x)
         x2 = self.second_path(x)
         x3 = self.third_path(x)
@@ -72,7 +72,7 @@ class ConvInception(nn.Module):
     connections.
     """
 
-    def __init__(self, in_channels, out_channels):
+    def __init__(self, in_channels: int, out_channels: int):
         super().__init__()
 
         self.pre_downscale = nn.Sequential(
@@ -83,7 +83,7 @@ class ConvInception(nn.Module):
             InceptionModule(out_channels, out_channels)
         )
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.pre_downscale(x)
 
 
@@ -94,7 +94,7 @@ class FirstUpscaling(nn.Module):
     compared to the regular upscaling block.
     """
 
-    def __init__(self, in_channels):
+    def __init__(self, in_channels: int):
         super().__init__()
 
         mid_channels = in_channels * 2
@@ -109,7 +109,7 @@ class FirstUpscaling(nn.Module):
             nn.ReLU(inplace=True)
         )
 
-    def forward(self, x1, x2):
+    def forward(self, x1: torch.Tensor, x2: torch.Tensor) -> torch.Tensor:
         x1 = self.upscaling(x1)
 
         # x2 comes from the contracting path and has
@@ -132,7 +132,7 @@ class Upscaling(nn.Module):
     and expansive paths.
     """
 
-    def __init__(self, in_channels):
+    def __init__(self, in_channels: int):
         super().__init__()
 
         mid_channels = [in_channels // 2, in_channels // 4]
@@ -147,7 +147,7 @@ class Upscaling(nn.Module):
             nn.ReLU(inplace=True)
         )
 
-    def forward(self, x1, x2):
+    def forward(self, x1: torch.Tensor, x2: torch.Tensor) -> torch.Tensor:
         x1 = self.upscaling(x1)
 
         # x2 comes from the contracting path and has
@@ -168,7 +168,7 @@ class Final(nn.Module):
     Final block of the network terminated with sigmoid function.
     """
 
-    def __init__(self, in_channels, out_channels):
+    def __init__(self, in_channels: int, out_channels: int):
         super().__init__()
 
         mid_channels = in_channels // 2
@@ -186,7 +186,7 @@ class Final(nn.Module):
             nn.Sigmoid()
         )
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.final(x)
 
 
