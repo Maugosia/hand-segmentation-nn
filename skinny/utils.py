@@ -36,4 +36,3 @@ def create_segmentation_description_file(description_file, image_dir,
     f.close()
     append_csv_description(image_dir, label_dir, description_file)
     print("\nfile {} generated".format(description_file))
-
