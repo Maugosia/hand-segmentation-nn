@@ -9,12 +9,15 @@ import torch
 
 from tqdm.notebook import tqdm
 
+from torchmetrics import JaccardIndex
+
 
 def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
     """
     Main training procedure.
     """
-    train_loader = DataLoader(train_dataset, parameters.batch_size, shuffle=True)
+    train_loader = DataLoader(
+        train_dataset, parameters.batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, parameters.batch_size, shuffle=True)
 
     model = parameters.model
@@ -22,40 +25,50 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
 
     writer = SummaryWriter()
 
+    iou = JaccardIndex(num_classes=2, task="binary").to(parameters.device)
+
     for epoch in range(parameters.epochs):
         model.train()
         train_loss = []
 
-        bar = tqdm(train_loader, position=0, leave=False,
-                   desc=f"epoch {epoch + 1}")
+        with tqdm(train_loader, unit="batch", desc=f"Epoch {epoch + 1}/{parameters.epochs} + 1") as bar:
+            for batch in bar:
+                images, masks = batch
+                logits, loss = calculate_logits_and_loss(
+                    images, masks, model, parameters.criterion, parameters.device)
 
-        for batch in bar:
-            images, masks = batch
-            logits, loss = calculate_logits_and_loss(
-                images, masks, model, parameters.criterion, parameters.device)
+                loss.backward()
+                optimizer.step()
+                optimizer.zero_grad()
 
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-            train_loss.append(loss)
+                train_loss.append(loss)
+                bar.set_postfix(loss=loss.item())
 
         avg_train_loss = torch.stack(train_loss).mean()
         writer.add_scalar("Loss/train", avg_train_loss, epoch + 1)
-        print(f"Epoch: {epoch + 1} train loss: {avg_train_loss.item()}")
 
         model.eval()
 
         with torch.no_grad():
             val_loss = []
 
+            with tqdm(val_loader, colour="green", unit="batch", desc=f"Validation epoch {epoch + 1}/{parameters.epochs} + 1") as bar:
+                for batch in bar:
+                    images, masks = batch
+                    logits, loss = calculate_logits_and_loss(
+                        images, masks, model, parameters.criterion, parameters.device)
+                    val_loss.append(loss)
+
             for batch in val_loader:
                 images, masks = batch
                 logits, loss = calculate_logits_and_loss(
                     images, masks, model, parameters.criterion, parameters.device)
+
+                iou_score = iou(logits, masks)
                 val_loss.append(loss)
+                bar.set_postfix(loss=loss.item(), iou=iou_score)
 
             avg_val_loss = torch.stack(val_loss).mean()
             writer.add_scalar('Loss/validation', avg_val_loss, epoch + 1)
-            print(f"Epoch: {epoch + 1} validation loss: {avg_val_loss.item()}")
 
     return model, writer
