@@ -31,7 +31,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
         model.train()
         train_loss = []
 
-        with tqdm(train_loader, unit="batch", desc=f"Epoch {epoch + 1}/{parameters.epochs}") as bar:
+        with tqdm(train_loader, leave=False, unit="batch", desc=f"Epoch {epoch + 1}/{parameters.epochs}") as bar:
             for batch in bar:
                 images, masks = batch
                 logits, loss, masks = calculate_logits_and_loss(
@@ -52,7 +52,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
         with torch.no_grad():
             val_loss = []
 
-            with tqdm(val_loader, colour="blue", unit="batch", desc=f"Validation epoch {epoch + 1}/{parameters.epochs}") as bar:
+            with tqdm(val_loader, leave=False, colour="blue", unit="batch", desc=f"Epoch {epoch + 1}/{parameters.epochs}") as bar:
                 for batch in bar:
                     images, masks = batch
                     logits, loss, masks = calculate_logits_and_loss(
@@ -60,7 +60,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
 
                     val_loss.append(loss)
                     iou_score = iou(logits, masks)
-                    bar.set_postfix(loss=loss.item(), iou=iou_score)
+                    bar.set_postfix(loss=loss.item(), iou=iou_score[0])
 
             avg_val_loss = torch.stack(val_loss).mean()
             writer.add_scalar('Loss/validation', avg_val_loss, epoch + 1)
