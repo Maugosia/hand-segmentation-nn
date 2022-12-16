@@ -12,6 +12,7 @@ class Parameters:
         self.criterion = criterion
         self.learning_rate = learning_rate
         self.batch_size = batch_size
+        self.device = device
         
-        self.model.to(device=device)
+        self.model.to(device=self.device)
         self.optimizer = optimizer(model.parameters(), lr=self.learning_rate, foreach=True)
