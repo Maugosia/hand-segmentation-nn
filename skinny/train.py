@@ -59,7 +59,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
                         images, masks, model, parameters.criterion, parameters.device)
 
                     val_loss.append(loss)
-                    iou_score = iou(logits, masks)
+                    iou_score = iou(logits[0][0], masks[0][0])
                     bar.set_postfix(loss=loss.item(), iou=iou_score.item())
 
             avg_val_loss = torch.stack(val_loss).mean()

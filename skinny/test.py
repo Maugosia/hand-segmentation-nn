@@ -39,7 +39,7 @@ def test(trained_model: Union[SkinnyBasic, SkinnyInception], parameters: Paramet
             logits, loss, masks = calculate_logits_and_loss(
                 images, masks, trained_model, parameters.criterion, parameters.device)
 
-            iou_sum += iou(logits, masks)
+            iou_sum += iou(logits[0][0], masks[0][0]).item()
             test_loss.append(loss)
 
         avg_test_loss = torch.stack(test_loss).mean()
