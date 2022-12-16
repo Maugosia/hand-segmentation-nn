@@ -9,7 +9,7 @@ import torch
 from tqdm.notebook import tqdm
 
 
-def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset) -> nn.Module:
+def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
     """
     Main training procedure.
     """
@@ -32,7 +32,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset) 
         for batch in bar:
             images, masks = batch
             logits, loss = calculate_logits_and_loss(
-                images, model, parameters.criterion)
+                images, masks, model, parameters.criterion)
 
             loss.backward()
             optimizer.step()
@@ -51,7 +51,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset) 
             for batch in val_loader:
                 images, masks = batch
                 logits, loss = calculate_logits_and_loss(
-                    images, model, parameters.criterion)
+                    images, masks, model, parameters.criterion)
                 val_loss.append(loss)
 
             avg_val_loss = torch.stack(val_loss).mean()
