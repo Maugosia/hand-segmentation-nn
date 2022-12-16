@@ -26,10 +26,10 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
         model.train()
         train_loss = []
 
-        # bar = tqdm(train_loader, position=0, leave=False,
-        #            desc=f"epoch {epoch + 1}")
+        bar = tqdm(train_loader, position=0, leave=False,
+                   desc=f"epoch {epoch + 1}")
 
-        for batch in train_loader:
+        for batch in bar:
             images, masks = batch
             logits, loss = calculate_logits_and_loss(
                 images, masks, model, parameters.criterion, parameters.device)
