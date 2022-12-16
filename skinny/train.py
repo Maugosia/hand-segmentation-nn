@@ -26,10 +26,10 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
         model.train()
         train_loss = []
 
-        bar = tqdm(train_loader, position=0, leave=False,
-                   desc=f"epoch {epoch + 1}")
+        # bar = tqdm(train_loader, position=0, leave=False,
+        #            desc=f"epoch {epoch + 1}")
 
-        for batch in bar:
+        for batch in train_loader:
             images, masks = batch
             logits, loss = calculate_logits_and_loss(
                 images, masks, model, parameters.criterion, parameters.device)
@@ -70,6 +70,6 @@ def calculate_logits_and_loss(x: torch.Tensor, y: torch.Tensor, model: nn.Module
     y = y.to(device=device, dtype=torch.float32)
 
     logits = model(x)
-    loss = criterion(x, y)
+    loss = criterion(logits, y)
 
     return logits, loss
