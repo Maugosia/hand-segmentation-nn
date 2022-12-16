@@ -19,29 +19,29 @@ class InceptionModule(nn.Module):
         self.first_path = nn.Sequential(
             nn.MaxPool2d(kernel_size=3),
             nn.Conv2d(in_channels=in_channels, out_channels=mid_channels,
-                      padding=padding_mode, kernel_size=1, bias=False),
+                      padding=PADDING_MODE, kernel_size=1, bias=False),
             nn.ReLU(inplace=True)
         )
 
         self.second_path = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=mid_channels,
-                      padding=padding_mode, kernel_size=1, bias=False),
+                      padding=PADDING_MODE, kernel_size=1, bias=False),
             nn.ReLU(inplace=True)
         )
 
         self.third_path = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=mid_channels,
-                      padding=padding_mode, kernel_size=1, bias=False),
+                      padding=PADDING_MODE, kernel_size=1, bias=False),
             nn.Conv2d(in_channels=mid_channels, out_channels=mid_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.ReLU(inplace=True)
         )
 
         self.fourth_path = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=mid_channels,
-                      padding=padding_mode, kernel_size=1, bias=False),
+                      padding=PADDING_MODE, kernel_size=1, bias=False),
             nn.Conv2d(in_channels=mid_channels, out_channels=mid_channels,
-                      padding=padding_mode, kernel_size=5, bias=False),
+                      padding=PADDING_MODE, kernel_size=5, bias=False),
             nn.ReLU(inplace=True)
         )
 
@@ -77,7 +77,7 @@ class ConvInception(nn.Module):
 
         self.pre_downscale = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
             InceptionModule(out_channels, out_channels)
@@ -104,7 +104,7 @@ class FirstUpscaling(nn.Module):
             nn.ConvTranspose2d(in_channels=mid_channels, out_channels=in_channels,
                                stride=2, kernel_size=3),
             nn.Conv2d(in_channels=in_channels, out_channels=in_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(in_channels),
             nn.ReLU(inplace=True)
         )
@@ -142,7 +142,7 @@ class Upscaling(nn.Module):
             nn.ConvTranspose2d(in_channels=mid_channels[0], out_channels=mid_channels[1],
                                stride=2, kernel_size=3),
             nn.Conv2d(in_channels=mid_channels[1], out_channels=mid_channels[1],
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(mid_channels[1]),
             nn.ReLU(inplace=True)
         )
@@ -176,13 +176,13 @@ class Final(nn.Module):
         self.final = nn.Sequential(
             InceptionModule(40, 20),
             nn.Conv2d(in_channels=20, out_channels=20,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.ReLU(inplace=True),
             nn.Conv2d(in_channels=20, out_channels=10,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.ReLU(inplace=True),
             nn.Conv2d(in_channels=10, out_channels=out_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.Sigmoid()
         )
 
@@ -199,11 +199,11 @@ class InitConv(nn.Module):
 
         self.sequential_stack = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
             nn.Conv2d(in_channels=out_channels, out_channels=out_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(out_channels)
         )
 
@@ -220,11 +220,11 @@ class ConvDown(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2),
             nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
             nn.Conv2d(in_channels=out_channels, out_channels=out_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(out_channels)
         )
 
@@ -241,16 +241,16 @@ class DeconvUp(nn.Module):
 
         self.sequential_stack = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
             nn.Conv2d(in_channels=out_channels, out_channels=out_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(out_channels),
             nn.ConvTranspose2d(in_channels=out_channels, out_channels=mid_channels,
                                stride=2, kernel_size=3),
             nn.Conv2d(in_channels=mid_channels, out_channels=mid_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(mid_channels),
             nn.ReLU(inplace=True)
         )
@@ -274,20 +274,20 @@ class FinalConv(nn.Module):
 
         self.sequential_stack = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=mid_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(mid_channels),
             nn.ReLU(inplace=True),
             nn.Conv2d(in_channels=mid_channels, out_channels=mid_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.BatchNorm2d(mid_channels),
             nn.Conv2d(in_channels=mid_channels, out_channels=mid_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.ReLU(inplace=True),
             nn.Conv2d(in_channels=mid_channels, out_channels=mid_channels // 2,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.ReLU(inplace=True),
             nn.Conv2d(in_channels=mid_channels // 2, out_channels=out_channels,
-                      padding=padding_mode, kernel_size=3, bias=False),
+                      padding=PADDING_MODE, kernel_size=3, bias=False),
             nn.Sigmoid()
         )
 
