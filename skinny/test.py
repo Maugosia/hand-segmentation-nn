@@ -36,7 +36,7 @@ def test(trained_model: Union[SkinnyBasic, SkinnyInception], parameters: Paramet
 
             images, masks = batch
 
-            logits, loss = calculate_logits_and_loss(
+            logits, loss, masks = calculate_logits_and_loss(
                 images, masks, trained_model, parameters.criterion, parameters.device)
 
             iou_sum += iou(logits, masks)

@@ -70,4 +70,4 @@ def calculate_logits_and_loss(x: torch.Tensor, y: torch.Tensor, model: nn.Module
     logits = model(x)
     loss = criterion(logits, y)
 
-    return logits, loss
+    return logits, loss, y

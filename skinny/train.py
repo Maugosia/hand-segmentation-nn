@@ -34,7 +34,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
         with tqdm(train_loader, unit="batch", desc=f"Epoch {epoch + 1}/{parameters.epochs}") as bar:
             for batch in bar:
                 images, masks = batch
-                logits, loss = calculate_logits_and_loss(
+                logits, loss, masks = calculate_logits_and_loss(
                     images, masks, model, parameters.criterion, parameters.device)
 
                 loss.backward()
@@ -55,7 +55,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
             with tqdm(val_loader, colour="blue", unit="batch", desc=f"Validation epoch {epoch + 1}/{parameters.epochs}") as bar:
                 for batch in bar:
                     images, masks = batch
-                    logits, loss = calculate_logits_and_loss(
+                    logits, loss, masks = calculate_logits_and_loss(
                         images, masks, model, parameters.criterion, parameters.device)
 
                     val_loss.append(loss)
