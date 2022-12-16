@@ -1,4 +1,5 @@
 from .parameters import Parameters
+from .utils import calculate_logits_and_loss
 
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import Dataset
@@ -58,17 +59,3 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
             print(f"Epoch: {epoch + 1} validation loss: {avg_val_loss.item()}")
 
     return model, writer
-
-
-def calculate_logits_and_loss(x: torch.Tensor, y: torch.Tensor, model: nn.Module, criterion, device):
-    """
-    Runs tensor through the model and calculates loss function output.
-    """
-    x = x.to(device=device, dtype=torch.float32,
-             memory_format=torch.channels_last)
-    y = y.to(device=device, dtype=torch.float32)
-
-    logits = model(x)
-    loss = criterion(logits, y)
-
-    return logits, loss

@@ -56,3 +56,17 @@ def dice_bce_loss(x: torch.Tensor, y: torch.Tensor):
     loss = (BCE + dice_loss) / 2
 
     return loss
+
+
+def calculate_logits_and_loss(x: torch.Tensor, y: torch.Tensor, model: nn.Module, criterion, device):
+    """
+    Runs tensor through the model and calculates loss function output.
+    """
+    x = x.to(device=device, dtype=torch.float32,
+             memory_format=torch.channels_last)
+    y = y.to(device=device, dtype=torch.float32)
+
+    logits = model(x)
+    loss = criterion(logits, y)
+
+    return logits, loss
