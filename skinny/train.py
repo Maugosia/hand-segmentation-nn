@@ -60,7 +60,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
 
                     val_loss.append(loss)
                     iou_score = iou(logits, masks)
-                    bar.set_postfix(loss=loss.item(), iou=iou_score[0])
+                    bar.set_postfix(loss=loss.item(), iou=iou_score.item())
 
             avg_val_loss = torch.stack(val_loss).mean()
             writer.add_scalar('Loss/validation', avg_val_loss, epoch + 1)
