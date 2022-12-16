@@ -13,9 +13,8 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
     """
     Main training procedure.
     """
-    train_loader = DataLoader(
-        train_dataset, parameters.batch_size, shuffle=True)
-    val_dataset = DataLoader(val_dataset, parameters.batch_size, shuffle=True)
+    train_loader = DataLoader(train_dataset, parameters.batch_size, shuffle=True)
+    val_loader = DataLoader(val_dataset, parameters.batch_size, shuffle=True)
 
     model = parameters.model
     optimizer = parameters.optimizer

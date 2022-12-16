@@ -46,8 +46,6 @@ def dice_bce_loss(x: torch.Tensor, y: torch.Tensor):
     Calculate loss based on average of Dice loss
     and binary cross-entropy loss.
     """
-    print(x.shape)
-    print(y.shape)
 
     x = x.flatten()
     y = y.flatten()
