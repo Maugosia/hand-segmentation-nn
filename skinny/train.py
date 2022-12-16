@@ -32,7 +32,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
         for batch in bar:
             images, masks = batch
             logits, loss = calculate_logits_and_loss(
-                images, masks, model, parameters.criterion)
+                images, masks, model, parameters.criterion, parameters.device)
 
             loss.backward()
             optimizer.step()
@@ -51,7 +51,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
             for batch in val_loader:
                 images, masks = batch
                 logits, loss = calculate_logits_and_loss(
-                    images, masks, model, parameters.criterion)
+                    images, masks, model, parameters.criterion, parameters.device)
                 val_loss.append(loss)
 
             avg_val_loss = torch.stack(val_loss).mean()
@@ -61,7 +61,7 @@ def train(parameters: Parameters, train_dataset: Dataset, val_dataset: Dataset):
     return model, writer
 
 
-def calculate_logits_and_loss(x: torch.Tensor, y: torch.Tensor, model: nn.Module, criterion):
+def calculate_logits_and_loss(x: torch.Tensor, y: torch.Tensor, model: nn.Module, criterion, device):
     """
     Runs tensor through the model and calculates loss function output.
     """
