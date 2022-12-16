@@ -1,10 +1,12 @@
 from .models import SkinnyBasic, SkinnyInception
 
+from typing import Union
+
 class Parameters:
     """
     Object holding training parameters.
     """
-    def __init__(self, model: SkinnyBasic | SkinnyInception, epochs: int, learning_rate: float, criterion, optimizer, device, batch_size: int):
+    def __init__(self, model: Union[SkinnyBasic, SkinnyInception], epochs: int, learning_rate: float, criterion, optimizer, device, batch_size: int):
         self.model = model
         self.epochs = epochs
         self.criterion = criterion

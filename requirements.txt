@@ -5,4 +5,5 @@ pillow
 torchvision
 torchmetrics
 tqdm
+tensorboard
 matplotlib
