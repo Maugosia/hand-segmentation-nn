@@ -2,6 +2,7 @@ from .segments import InitConv, ConvDown, DeconvUp, FinalConv, AdditionalLayers,
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class SkinnyInception(nn.Module):
