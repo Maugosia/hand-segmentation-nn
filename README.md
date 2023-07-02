@@ -9,6 +9,9 @@ Implemented neural architecture was based on article: [1]. It is a fully convolu
 ![Przechwytywanie](https://github.com/Maugosia/hand-segmentation-nn/assets/109951752/208d1543-d82e-4ff7-9c84-372eb3974ade)
 
 
+![Przechwytywawwnie](https://github.com/Maugosia/hand-segmentation-nn/assets/109951752/981e77aa-f05c-44b0-93da-47d26c472077)
+
+
 ## Authors and acknowledgment
 This project was coauthored with Maciej Marcinkiewicz: https://github.com/godotto
 
