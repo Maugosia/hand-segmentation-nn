@@ -4,6 +4,7 @@
 This project was compleated as part of an academic course and deals with a problem of hand segmentation. 
 The dataset used was: database for hand gesture recognition, available here: https://sun.aei.polsl.pl/~mkawulok/gestures/
 Implemented neural architecture was based on article: [1]. It is a fully convolutional architecture based on U-net called "skinny".
+![Przechwytywanie](https://github.com/Maugosia/hand-segmentation-nn/assets/109951752/208d1543-d82e-4ff7-9c84-372eb3974ade)
 
 
 ## Authors and acknowledgment
